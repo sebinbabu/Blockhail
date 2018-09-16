@@ -1,119 +1,50 @@
 package wittybox.Tetrax;
 
-import java.util.Random;
 import java.util.Arrays;
-import wittybox.Tetrax.Point;
 
 class Shape {
-	private static Random r = new Random(); 
-	public static final int I = 0;
-	public static final int O = 1;
-	public static final int T = 2;
-	public static final int S = 3;
-	public static final int Z = 4;
-	public static final int J = 5;
-	public static final int L = 6;
+	protected boolean [][][]matrix;
+	protected int rotation;
 
-	Point []points = new Point[4];
-	boolean halted;
-	Point pos;
-	int shape;
-
-	Point[] getPoints() {
-		return points;
+	public boolean[][] getMatrix() {
+		return matrix[rotation];
 	}
 
-	void rotate() {
-		for(Point p : points) {
-			p.rotateRight();
-		}
+	public void rotateRight() {
+		rotation++;
+		if(rotation == matrix.length)
+			rotation = 0;
+	}
+
+	public void rotateLeft() {
+		rotation--;
+		if(rotation < 0)
+			rotation = matrix.length - 1;
 	}
 
 	@Override
 	public boolean equals(Object s) {
 		return s instanceof Shape &&
-				this.halted == ((Shape) s).halted &&
-				this.pos.equals(((Shape) s).pos) &&
-				this.shape == ((Shape) s).shape &&
-				Arrays.equals(this.points, ((Shape) s).points);
+				this.rotation == ((Shape) s).rotation &&
+				Arrays.deepEquals(this.matrix, ((Shape) s).matrix);
 	}
 
 	@Override
 	public String toString() {
+		int i, j;
 		StringBuffer sb = new StringBuffer(32);
-		sb.append("{");
-		for(int i = 0; i < points.length - 1; i++) {
-			sb.append(points[i]);
-			sb.append(", ");
+		for(i = 0; i < this.matrix[this.rotation].length; i++) {
+			for(j = 0; j < this.matrix[this.rotation][i].length; j++) {
+				sb.append(this.matrix[this.rotation][i][j] ? '#' : ' ');				
+			}
+			if(i != this.matrix[this.rotation].length - 1)
+				sb.append(System.getProperty("line.separator"));
 		}
-		sb.append(points[points.length - 1]);
-		sb.append("}");
 		return sb.toString();
 	}
 
 	Shape() {
-		this(r.nextInt(7), new Point(10, 10));
-	}
-
-	Shape(int shape, Point pos) {
-		this.shape = shape;
-		this.pos = pos;
-		halted = false;
-		switch(shape) {
-			case I:
-					points[0] = new Point(-2, 0);
-					points[1] = new Point(-1, 0);
-					points[2] = new Point(0, 0);
-					points[3] = new Point(1, 0);
-				break;
-			case O:
-					points[0] = new Point(0, 0);
-					points[1] = new Point(0, 1);
-					points[2] = new Point(1, 0);
-					points[3] = new Point(1, 1);
-				break;
-
-			case T:
-					points[0] = new Point(0, 0);
-					points[1] = new Point(1, 0);
-					points[2] = new Point(-1, 0);
-					points[3] = new Point(0, 1);
-				break;
-
-			case S:
-					points[0] = new Point(1, 1);
-					points[1] = new Point(0, 1);
-					points[2] = new Point(0, 0);
-					points[3] = new Point(-1, 0);
-				break;
-
-			case Z:
-					points[0] = new Point(-1, 1);
-					points[1] = new Point(0, 1);
-					points[2] = new Point(0, 0);
-					points[3] = new Point(1, 0);
-				break;
-
-			case J:
-					points[0] = new Point(-1, 1);
-					points[1] = new Point(-1, 0);
-					points[2] = new Point(0, 0);
-					points[3] = new Point(1, 0);
-				break;
-
-			case L:
-					points[0] = new Point(1, 1);
-					points[1] = new Point(1, 0);
-					points[2] = new Point(0, 0);
-					points[3] = new Point(-1, 0);
-				break;
-		}
-	}
-
-	public static void main(String args[]) {
-		Shape activeShape = new Shape();
-		System.out.println("Before rotation: " + activeShape);
-		activeShape.rotate();
-		System.out.println("After rotation: " + activeShape);
+		this.matrix = null;
+		this.rotation = 0;
 	}
 }
