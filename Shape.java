@@ -1,50 +1,65 @@
 package wittybox.Tetrax;
 
 import java.util.Arrays;
+import wittybox.Tetrax.*;
 
 class Shape {
-	protected boolean [][][]matrix;
-	protected int rotation;
+	private Point [][]points;
+	private int rotation;
 
-	public boolean[][] getMatrix() {
-		return matrix[rotation];
+	public Point[] getPoints() {
+		if(points == null)
+			return null;
+		return points[rotation];
 	}
 
 	public void rotateRight() {
-		rotation++;
-		if(rotation == matrix.length)
-			rotation = 0;
+		if(points != null) {
+			rotation++;
+			if(rotation == points.length)
+				rotation = 0;
+		}
 	}
 
 	public void rotateLeft() {
-		rotation--;
-		if(rotation < 0)
-			rotation = matrix.length - 1;
+		if(points != null) {
+			rotation--;
+			if(rotation < 0)
+				rotation = points.length - 1;
+		}
 	}
 
 	@Override
 	public boolean equals(Object s) {
 		return s instanceof Shape &&
 				this.rotation == ((Shape) s).rotation &&
-				Arrays.deepEquals(this.matrix, ((Shape) s).matrix);
+				Arrays.equals(this.points, ((Shape) s).points);
 	}
 
 	@Override
 	public String toString() {
 		int i, j;
 		StringBuffer sb = new StringBuffer(32);
-		for(i = 0; i < this.matrix[this.rotation].length; i++) {
-			for(j = 0; j < this.matrix[this.rotation][i].length; j++) {
-				sb.append(this.matrix[this.rotation][i][j] ? '#' : ' ');				
-			}
-			if(i != this.matrix[this.rotation].length - 1)
-				sb.append(System.getProperty("line.separator"));
+		sb.append("{");
+		for(i = 0; i < this.points[this.rotation].length - 1; i++) {
+			sb.append(this.points[this.rotation][i].toString());
+			sb.append(", ");
 		}
+
+		if(i < this.points[this.rotation].length) {
+			sb.append(this.points[this.rotation][i].toString());
+		}
+		sb.append("}");
 		return sb.toString();
 	}
 
 	Shape() {
-		this.matrix = null;
+		this.points = null;
+		this.rotation = 0;
+	}
+
+	Shape(Point [][]points) {
+		this.points = points;
 		this.rotation = 0;
 	}
 }
