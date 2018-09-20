@@ -30,13 +30,13 @@ public class Board {
 		return this.matrix[x][y];
 	}
 
-	public Board(Terminal terminal) throws IOException {
+	public Board(){
 		this.rows = 20;
 		this.cols = 16;
 		this.matrix = new boolean[20][16];
 	}
 
-	public Board(int rows, int cols, Terminal terminal) throws IOException {
+	public Board(int rows, int cols){
 		this.rows = rows;
 		this.cols = cols;
 		this.matrix = new boolean[rows][cols];

@@ -158,14 +158,15 @@ public class Game {
 		this.pasteShape();
 		this.terminal.clearScreen();
 		int i, j;
-		for(i = 0, this.cols += 2; i < this.cols; i++) {
+		int cols = this.board.getCols(), rows = this.board.getRows();
+		for(i = 0, cols += 2; i < cols; i++) {
 			this.terminal.putCharacter('-');
 		}
 		this.terminal.putCharacter('\n');
 
-		for(i = 0, this.cols -= 2; i < this.rows; i++) {
+		for(i = 0, cols -= 2; i < rows; i++) {
 			this.terminal.putCharacter('|');
-			for(j = 0; j < this.cols; j++) {
+			for(j = 0; j < cols; j++) {
 				if(this.board.get(i, j)) {
 					this.terminal.putCharacter('*');
 				} else {
@@ -176,10 +177,10 @@ public class Game {
 			this.terminal.putCharacter('\n');
 		}
 
-		for(i = 0, this.cols += 2; i < this.cols; i++) {
+		for(i = 0, cols += 2; i < cols; i++) {
 			this.terminal.putCharacter('-');
 		}
-		this.cols -= 2;
+
 		this.terminal.putCharacter('\n');
 		this.terminal.flush();
 		this.clearShape();
@@ -194,7 +195,7 @@ public class Game {
 		this.activeShape = Shapes.getRandomShape();
 		this.activeShapePos = new Point(3, 6);
 
-		this.board = new Board(terminal); 
+		this.board = new Board(); 
 	}
 
 	public static void main(String args[]) {
