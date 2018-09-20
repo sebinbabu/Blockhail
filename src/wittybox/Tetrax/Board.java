@@ -1,44 +1,17 @@
 package wittybox.Tetrax;
 
 import wittybox.Tetrax.*;
-import java.io.IOException;
-import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
-import com.googlecode.lanterna.terminal.Terminal;
 
 public class Board {
 	private boolean [][]matrix;
 	private int rows = 20;
 	private int cols = 16;
 
-	private Terminal terminal;
-
-	public void display() throws IOException {
-		this.terminal.clearScreen();
-		int i, j;
-		for(i = 0, this.cols += 2; i < this.cols; i++) {
-			this.terminal.putCharacter('-');
+	public void deleteRow(int row) {
+		for(int i = row; i > 0; i--) {
+			matrix[i] = matrix[i - 1];
 		}
-		this.terminal.putCharacter('\n');
-
-		for(i = 0, this.cols -= 2; i < this.rows; i++) {
-			this.terminal.putCharacter('|');
-			for(j = 0; j < this.cols; j++) {
-				if(matrix[i][j]) {
-					this.terminal.putCharacter('*');
-				} else {
-					this.terminal.putCharacter(' ');
-				}
-			}
-			this.terminal.putCharacter('|');
-			this.terminal.putCharacter('\n');
-		}
-
-		for(i = 0, this.cols += 2; i < this.cols; i++) {
-			this.terminal.putCharacter('-');
-		}
-		this.cols -= 2;
-		this.terminal.putCharacter('\n');
-		this.terminal.flush();
+		matrix[0] = new boolean[cols];
 	}
 
 	public int getRows() {
@@ -61,27 +34,11 @@ public class Board {
 		this.rows = 20;
 		this.cols = 16;
 		this.matrix = new boolean[20][16];
-        this.terminal = terminal;
 	}
 
 	public Board(int rows, int cols, Terminal terminal) throws IOException {
 		this.rows = rows;
 		this.cols = cols;
 		this.matrix = new boolean[rows][cols];
-        this.terminal = terminal;
-	}
-
-	public static void main(String args[]) {
-		try {
-			DefaultTerminalFactory terminalFactory = new DefaultTerminalFactory();
-			Terminal terminal = terminalFactory.createTerminal();
-			terminal.enterPrivateMode();
-
-			Board b = new Board(terminal);
-			b.display();
-			Thread.sleep(3000);
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
 	}
  }

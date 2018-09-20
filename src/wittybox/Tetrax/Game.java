@@ -14,6 +14,23 @@ public class Game {
 	private DefaultTerminalFactory terminalFactory = null;
 	private Terminal terminal = null;
 
+	private boolean isRowFilled(int row) {
+		int cols = this.board.getCols();
+		for(int i = 0; i < cols; i++) {
+			if(this.board.get(row, i) == false) 
+				return false;
+		}
+		return true;
+	}
+
+	private void removeFilledRows() {
+		for(int i = 0; i < board.getRows(); i++) {
+			if(isRowFilled(i)) {
+				this.board.deleteRow(i);
+			}
+		}
+	}
+
 	public boolean rotateShape() {
 		this.activeShape.rotateRight();
 		Point []points = this.activeShape.getPoints();
@@ -57,7 +74,7 @@ public class Game {
 		this.activeShapePos = new Point(3, 6);
 	}
 
-	public void pasteShape() {
+	private void pasteShape() {
 		Point []points = this.activeShape.getPoints();
 		for(Point p : points) {
 			this.board.set(p.getX() + this.activeShapePos.getX(), p.getY() + this.activeShapePos.getY(), true);
@@ -107,11 +124,13 @@ public class Game {
 			res = pos.getX() + potentialX;
 			if(res >= this.board.getRows()) {
 				this.pasteShape();
+				this.removeFilledRows();
 				this.setNewShape();
 				return false;
 			}
 			if(this.board.get(res, potentialY + pos.getY())) {
 				this.pasteShape();
+				this.removeFilledRows();
 				this.setNewShape();
 				return false;
 			}
@@ -128,7 +147,7 @@ public class Game {
 		return this.terminal.pollInput().getKeyType();
 	}
 
-	public void clearShape() {
+	private void clearShape() {
 		Point []points = this.activeShape.getPoints();
 		for(Point p : points) {
 			this.board.set(p.getX() + this.activeShapePos.getX(), p.getY() + this.activeShapePos.getY(), false);			
@@ -137,14 +156,39 @@ public class Game {
 
 	public void displayBoard() throws IOException {
 		this.pasteShape();
-		this.board.display();
+		this.terminal.clearScreen();
+		int i, j;
+		for(i = 0, this.cols += 2; i < this.cols; i++) {
+			this.terminal.putCharacter('-');
+		}
+		this.terminal.putCharacter('\n');
+
+		for(i = 0, this.cols -= 2; i < this.rows; i++) {
+			this.terminal.putCharacter('|');
+			for(j = 0; j < this.cols; j++) {
+				if(this.board.get(i, j)) {
+					this.terminal.putCharacter('*');
+				} else {
+					this.terminal.putCharacter(' ');
+				}
+			}
+			this.terminal.putCharacter('|');
+			this.terminal.putCharacter('\n');
+		}
+
+		for(i = 0, this.cols += 2; i < this.cols; i++) {
+			this.terminal.putCharacter('-');
+		}
+		this.cols -= 2;
+		this.terminal.putCharacter('\n');
+		this.terminal.flush();
 		this.clearShape();
 	}
 
 	public Game() throws IOException {
 		this.terminalFactory = new DefaultTerminalFactory();
 		this.terminal = terminalFactory.createTerminal();
-		this.terminal.enterPrivateMode();
+		//this.terminal.enterPrivateMode();
         this.terminal.setCursorVisible(false);
 		
 		this.activeShape = Shapes.getRandomShape();
