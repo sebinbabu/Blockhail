@@ -189,7 +189,7 @@ public class Game {
 	public Game() throws IOException {
 		this.terminalFactory = new DefaultTerminalFactory();
 		this.terminal = terminalFactory.createTerminal();
-		//this.terminal.enterPrivateMode();
+		this.terminal.enterPrivateMode();
         this.terminal.setCursorVisible(false);
 		
 		this.activeShape = Shapes.getRandomShape();
