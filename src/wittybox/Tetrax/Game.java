@@ -8,6 +8,11 @@ public class Game {
 	private Shape activeShape = null;
 	private Point activeShapePos = null;
 	private Board board = null;
+	private int score = 0;
+
+	public int getScore() {
+		return this.score;
+	}
 
 	public Board getBoard() {
 		return this.board;
@@ -34,6 +39,7 @@ public class Game {
 		for(int i = 0; i < board.getRows(); i++) {
 			if(isRowFilled(i)) {
 				this.board.deleteRow(i);
+				this.score += 10;
 			}
 		}
 	}
@@ -157,6 +163,7 @@ public class Game {
 		this.activeShape = Shapes.getRandomShape();
 		this.activeShapePos = new Point(3, 6);
 		this.board = new Board(); 
+		this.score = 0;
 	}
 
 	public static void main(String args[]) {
