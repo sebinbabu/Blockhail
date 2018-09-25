@@ -14,6 +14,16 @@ public class Board {
 		matrix[0] = new boolean[cols];
 	}
 
+	public void undeleteRow(int row) {
+		for(int i = 0; i < row; i++) {
+			matrix[i] = matrix[i + 1];
+		}
+		matrix[row] = new boolean[this.cols];
+		for(int i = 0; i < this.cols; i++) {
+			matrix[row][i] = true;
+		}
+	}
+
 	public int getRows() {
 		return this.rows;
 	}

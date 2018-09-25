@@ -16,8 +16,10 @@ public class Window extends JPanel implements KeyListener {
 	Game game = null;
 
 	public void tick() {
-		this.game.moveShapeDown();
-		this.render();
+		if(!this.game.isPaused()) {
+			this.game.moveShapeDown();
+			this.render();
+		}
 	}
 
 	public Window() {
@@ -79,6 +81,14 @@ public class Window extends JPanel implements KeyListener {
 			this.game.moveShapeLeft();
 		} else if (code == KeyEvent.VK_RIGHT) {
 			this.game.moveShapeRight();
+		} else if(e.getKeyChar() == 'u') {
+			this.game.undo();
+		} else if(e.getKeyChar() == 's') {
+			if(this.game.isPaused()) {
+				this.game.resume();
+			} else {
+				this.game.pause();
+			}
 		}
 		this.render();
     }

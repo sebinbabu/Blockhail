@@ -2,13 +2,57 @@ package wittybox.Tetrax;
 
 import wittybox.Tetrax.*;
 import java.awt.Color;
+import java.util.Stack;
 import java.io.IOException;
 
 public class Game {
 	private Shape activeShape = null;
-	private Point activeShapePos = null;
 	private Board board = null;
 	private int score = 0;
+	private boolean paused = true;
+
+	Stack <Operation> undoStack = new Stack<Operation>();
+
+	public boolean isPaused() {
+		return paused;
+	}
+
+	public void resume() {
+		this.paused = false;
+	}
+
+	public void pause() {
+		this.paused = true;
+	}
+
+	public void undo() {
+		//this.pause();
+		if(undoStack.empty())
+			return;
+		Operation op = (Operation) undoStack.pop();
+		switch(op.getOperation()) {
+			case DELETE_ROW:
+				this.undeleteBoardRow(((Integer) op.getVal()).intValue());
+				score -= 10;
+				break;
+			case ROTATE_SHAPE:
+				this.reverseRotateShape();
+				break;
+			case PASTE_SHAPE:
+				this.activeShape = (Shape) op.getVal();
+				this.clearShape();
+				break;
+			case MOVE_SHAPE_LEFT:
+				this.activeShape.getPos().setY(this.activeShape.getPos().getY() + 1);
+				break;
+			case MOVE_SHAPE_RIGHT:
+				this.activeShape.getPos().setY(this.activeShape.getPos().getY() - 1);
+				break;
+			case MOVE_SHAPE_DOWN:
+				this.moveShapeUp();
+				break;
+		}
+	}
 
 	public int getScore() {
 		return this.score;
@@ -23,7 +67,7 @@ public class Game {
 	}
 
 	public Point getActiveShapePos() {
-		return this.activeShapePos;
+		return this.activeShape.getPos();
 	}
 
 	private boolean isRowFilled(int row) {
@@ -39,15 +83,25 @@ public class Game {
 		for(int i = 0; i < board.getRows(); i++) {
 			if(isRowFilled(i)) {
 				this.board.deleteRow(i);
+				this.addOperation(Operations.DELETE_ROW, new Integer(i));
 				this.score += 10;
 			}
 		}
 	}
 
+	private void undeleteBoardRow(int row) {
+		this.board.undeleteRow(row);
+	} 
+
+	public boolean reverseRotateShape() {
+		this.activeShape.rotateLeft();
+		return true;
+	}
+
 	public boolean rotateShape() {
 		this.activeShape.rotateRight();
 		Point []points = this.activeShape.getPoints();
-		int potentialX = this.activeShapePos.getX(), potentialY = this.activeShapePos.getY();
+		int potentialX = this.activeShape.getPos().getX(), potentialY = this.activeShape.getPos().getY();
 		int x, y;
 
 		for(Point pos : points) {
@@ -79,24 +133,27 @@ public class Game {
 				return false;
 			}
 		}
+		this.addOperation(Operations.ROTATE_SHAPE);
 		return true;
 	}
 
 	public void setNewShape() {
 		this.activeShape = Shapes.getRandomShape();
-		this.activeShapePos = new Point(3, 6);
+		this.activeShape.setPos(new Point(3, 6));
+		this.addOperation(Operations.SET_NEW_SHAPE, (Object) this.activeShape);
 	}
 
 	public void pasteShape() {
 		Point []points = this.activeShape.getPoints();
 		for(Point p : points) {
-			this.board.set(p.getX() + this.activeShapePos.getX(), p.getY() + this.activeShapePos.getY(), true);
+			this.board.set(p.getX() + this.activeShape.getPos().getX(), p.getY() + this.activeShape.getPos().getY(), true);
 		}
+		this.addOperation(Operations.PASTE_SHAPE, (Object) this.activeShape);
 	}
 
 	public boolean moveShapeLeft() {
-		int potentialX = this.activeShapePos.getX();
-		int potentialY = this.activeShapePos.getY() - 1;
+		int potentialX = this.activeShape.getPos().getX();
+		int potentialY = this.activeShape.getPos().getY() - 1;
 		Point []points = this.activeShape.getPoints();
 		int res;
 
@@ -107,13 +164,21 @@ public class Game {
 			if(this.board.get(potentialX + pos.getX(), res))
 				return false;
 		}
-		this.activeShapePos.setY(potentialY);
+		this.activeShape.getPos().setY(potentialY);
+		this.addOperation(Operations.MOVE_SHAPE_LEFT);
+		return true;
+	}
+
+	public boolean moveShapeUp() {
+		int potentialX = this.activeShape.getPos().getX() - 1;
+		this.activeShape.getPos().setX(potentialX);
 		return true;
 	}
 
 	public boolean moveShapeRight() {
-		int potentialX = this.activeShapePos.getX();
-		int potentialY = this.activeShapePos.getY() + 1;
+		int potentialX = this.activeShape.getPos().getX();
+		int potentialY = this.activeShape.getPos().getY() + 1;
+
 		Point []points = this.activeShape.getPoints();
 		int res;
 
@@ -124,13 +189,14 @@ public class Game {
 			if(this.board.get(potentialX + pos.getX(), res))
 				return false;
 		}
-		this.activeShapePos.setY(potentialY);
+		this.activeShape.getPos().setY(potentialY);
+		this.addOperation(Operations.MOVE_SHAPE_RIGHT);
 		return true;
 	}
 
 	public boolean moveShapeDown(){
-		int potentialX = this.activeShapePos.getX() + 1;
-		int potentialY = this.activeShapePos.getY();
+		int potentialX = this.activeShape.getPos().getX() + 1;
+		int potentialY = this.activeShape.getPos().getY();
 		Point []points = this.activeShape.getPoints();
 		int res;
 		for(Point pos : points) {
@@ -148,22 +214,31 @@ public class Game {
 				return false;
 			}
 		}
-		this.activeShapePos.setX(potentialX);
+		this.activeShape.getPos().setX(potentialX);
+		this.addOperation(Operations.MOVE_SHAPE_DOWN);
 		return true;
 	}
 
 	public void clearShape() {
 		Point []points = this.activeShape.getPoints();
 		for(Point p : points) {
-			this.board.set(p.getX() + this.activeShapePos.getX(), p.getY() + this.activeShapePos.getY(), false);			
+			this.board.set(p.getX() + this.activeShape.getPos().getX(), p.getY() + this.activeShape.getPos().getY(), false);			
 		}
 	}
 
 	public Game() {
 		this.activeShape = Shapes.getRandomShape();
-		this.activeShapePos = new Point(3, 6);
+		this.activeShape.setPos(new Point(3, 6));
 		this.board = new Board(); 
 		this.score = 0;
+	}
+
+	private void addOperation(Operations op, Object val) {
+		undoStack.push(new Operation(op, val));
+	}
+
+	private void addOperation(Operations op) {
+		undoStack.push(new Operation(op));
 	}
 
 	public static void main(String args[]) {

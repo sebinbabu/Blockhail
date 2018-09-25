@@ -46,6 +46,10 @@ public class Shapes {
 		return new Shape(points[shape]);
 	}
 
+	public static Shape getShape(int shape) {
+		return new Shape(points[shape]);
+	}
+
 	public static void main(String args[]) {
 		Shape t = getRandomShape();
 		System.out.println(t.toString());

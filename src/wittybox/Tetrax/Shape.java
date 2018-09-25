@@ -6,11 +6,20 @@ import wittybox.Tetrax.*;
 class Shape {
 	private Point [][]points;
 	private int rotation;
+	private Point pos;
 
 	public Point[] getPoints() {
-		if(points == null)
+		if(this.points == null)
 			return null;
-		return points[rotation];
+		return this.points[rotation];
+	}
+
+	public void setPos(Point pos) {
+		this.pos = pos;
+	}
+
+	public Point getPos() {
+		return this.pos;
 	}
 
 	public void rotateRight() {
@@ -54,11 +63,19 @@ class Shape {
 	}
 
 	public Shape() {
+		this.pos = null;
 		this.points = null;
 		this.rotation = 0;
 	}
 
 	public Shape(Point [][]points) {
+		this.pos = null;
+		this.points = points;
+		this.rotation = 0;
+	}
+
+	public Shape(Point pos, Point [][]points) {
+		this.pos = pos;
 		this.points = points;
 		this.rotation = 0;
 	}
