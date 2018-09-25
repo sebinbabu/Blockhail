@@ -1,18 +1,25 @@
 package wittybox.Tetrax;
 
 import wittybox.Tetrax.*;
+import java.awt.Color;
 import java.io.IOException;
-import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
-import com.googlecode.lanterna.terminal.Terminal;
-import com.googlecode.lanterna.input.KeyStroke;
-import com.googlecode.lanterna.input.KeyType;
 
 public class Game {
 	private Shape activeShape = null;
 	private Point activeShapePos = null;
 	private Board board = null;
-	private DefaultTerminalFactory terminalFactory = null;
-	private Terminal terminal = null;
+
+	public Board getBoard() {
+		return this.board;
+	}
+
+	public Shape getActiveShape() {
+		return this.activeShape;
+	}
+
+	public Point getActiveShapePos() {
+		return this.activeShapePos;
+	}
 
 	private boolean isRowFilled(int row) {
 		int cols = this.board.getCols();
@@ -74,7 +81,7 @@ public class Game {
 		this.activeShapePos = new Point(3, 6);
 	}
 
-	private void pasteShape() {
+	public void pasteShape() {
 		Point []points = this.activeShape.getPoints();
 		for(Point p : points) {
 			this.board.set(p.getX() + this.activeShapePos.getX(), p.getY() + this.activeShapePos.getY(), true);
@@ -115,7 +122,7 @@ public class Game {
 		return true;
 	}
 
-	public boolean moveShapeDown() throws IOException{
+	public boolean moveShapeDown(){
 		int potentialX = this.activeShapePos.getX() + 1;
 		int potentialY = this.activeShapePos.getY();
 		Point []points = this.activeShape.getPoints();
@@ -139,86 +146,20 @@ public class Game {
 		return true;
 	}
 
-	public KeyType getBlockingInput() throws IOException {
-		return this.terminal.readInput().getKeyType();
-	}
-
-	public KeyType getNonBlockingInput() throws IOException {
-		return this.terminal.pollInput().getKeyType();
-	}
-
-	private void clearShape() {
+	public void clearShape() {
 		Point []points = this.activeShape.getPoints();
 		for(Point p : points) {
 			this.board.set(p.getX() + this.activeShapePos.getX(), p.getY() + this.activeShapePos.getY(), false);			
 		}
 	}
 
-	public void displayBoard() throws IOException {
-		this.pasteShape();
-		this.terminal.clearScreen();
-		int i, j;
-		int cols = this.board.getCols(), rows = this.board.getRows();
-		for(i = 0, cols += 2; i < cols; i++) {
-			this.terminal.putCharacter('-');
-		}
-		this.terminal.putCharacter('\n');
-
-		for(i = 0, cols -= 2; i < rows; i++) {
-			this.terminal.putCharacter('|');
-			for(j = 0; j < cols; j++) {
-				if(this.board.get(i, j)) {
-					this.terminal.putCharacter('*');
-				} else {
-					this.terminal.putCharacter(' ');
-				}
-			}
-			this.terminal.putCharacter('|');
-			this.terminal.putCharacter('\n');
-		}
-
-		for(i = 0, cols += 2; i < cols; i++) {
-			this.terminal.putCharacter('-');
-		}
-
-		this.terminal.putCharacter('\n');
-		this.terminal.flush();
-		this.clearShape();
-	}
-
-	public Game() throws IOException {
-		this.terminalFactory = new DefaultTerminalFactory();
-		this.terminal = terminalFactory.createTerminal();
-		this.terminal.enterPrivateMode();
-        this.terminal.setCursorVisible(false);
-		
+	public Game() {
 		this.activeShape = Shapes.getRandomShape();
 		this.activeShapePos = new Point(3, 6);
-
 		this.board = new Board(); 
 	}
 
 	public static void main(String args[]) {
-		try {
-			Game game = new Game();
-			KeyType key;
 
-			while(true) {
-				game.displayBoard();
-				key = game.getBlockingInput();
-				if(key == KeyType.ArrowUp) {
-					game.rotateShape();
-				} else if(key == KeyType.ArrowLeft) {
-					game.moveShapeLeft();
-				} else if(key == KeyType.ArrowRight) {
-					game.moveShapeRight();
-				} else if(key == KeyType.ArrowDown) {
-					game.moveShapeDown();
-				}
-
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
 	}
 }

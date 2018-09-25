@@ -5,7 +5,7 @@ import wittybox.Tetrax.*;
 public class Board {
 	private boolean [][]matrix;
 	private int rows = 20;
-	private int cols = 16;
+	private int cols = 12;
 
 	public void deleteRow(int row) {
 		for(int i = row; i > 0; i--) {
@@ -32,8 +32,8 @@ public class Board {
 
 	public Board(){
 		this.rows = 20;
-		this.cols = 16;
-		this.matrix = new boolean[20][16];
+		this.cols = 12;
+		this.matrix = new boolean[20][12];
 	}
 
 	public Board(int rows, int cols){
