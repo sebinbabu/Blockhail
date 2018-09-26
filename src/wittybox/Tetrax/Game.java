@@ -3,7 +3,6 @@ package wittybox.Tetrax;
 import wittybox.Tetrax.*;
 import java.awt.Color;
 import java.util.Stack;
-import java.io.IOException;
 
 public class Game {
 	private Shape activeShape = null;
