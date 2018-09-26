@@ -25,13 +25,13 @@ java wittybox.Tetrax.Window
 ```
 ## Usage
 
-Use the ```java wittybox.Tetrax.Window``` command to run the application.
-Press ```s key``` to start / pause.
-Press ```ARROW_LEFT key``` to move left.
-Press ```ARROW_RIGHT key``` to move right.
-Press ```ARROW_DOWN key``` to move down.
-Press ```ARROW_UP key``` to rotate.
-Press ```u key``` to undo.
+* Use the ```java wittybox.Tetrax.Window``` command to run the application.
+* Press ```s key``` to start / pause.
+* Press ```ARROW_LEFT key``` to move left.
+* Press ```ARROW_RIGHT key``` to move right.
+* Press ```ARROW_DOWN key``` to move down.
+* Press ```ARROW_UP key``` to rotate.
+* Press ```u key``` to undo.
 
 
 ## Authors / Credits
