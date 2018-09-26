@@ -2,7 +2,7 @@
 
 That classic block game with some added unnecessary features.
 
-![Tetrax](https://raw.githubusercontent.com/sebinbabu/Tetrax/master/Tetrax.jpg)
+![Tetrax](https://github.com/sebinbabu/Tetrax/raw/master/Tetrax.png)
 
 
 ### Prerequisites
