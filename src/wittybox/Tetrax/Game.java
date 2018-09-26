@@ -12,6 +12,7 @@ public class Game {
 	private boolean paused = true;
 
 	Stack <Operation> undoStack = new Stack<Operation>();
+	Stack <Operation> redoStack = new Stack<Operation>();
 
 	public boolean isPaused() {
 		return paused;
@@ -30,6 +31,8 @@ public class Game {
 		if(undoStack.empty())
 			return;
 		Operation op = (Operation) undoStack.pop();
+		redoStack.push(op);
+
 		switch(op.getOperation()) {
 			case DELETE_ROW:
 				this.undeleteBoardRow(((Integer) op.getVal()).intValue());
@@ -50,6 +53,44 @@ public class Game {
 				break;
 			case MOVE_SHAPE_DOWN:
 				this.moveShapeUp();
+				break;
+		}
+	}
+
+	public void redo() {
+		//this.pause();
+		if(redoStack.empty())
+			return;
+		Operation op = (Operation) redoStack.pop();
+
+		switch(op.getOperation()) {
+			case DELETE_ROW:
+				this.board.deleteRow(((Integer) op.getVal()).intValue());
+				this.addOperation(Operations.DELETE_ROW, op.getVal());
+				score += 10;
+				break;
+			case ROTATE_SHAPE:
+				this.activeShape.rotateLeft();
+				this.addOperation(Operations.ROTATE_SHAPE);
+				break;
+			case PASTE_SHAPE:
+				//this.activeShape = (Shape) op.getVal();
+				this.pasteShape();
+				break;
+			case MOVE_SHAPE_LEFT:
+				this.activeShape.getPos().setY(this.activeShape.getPos().getY() - 1);
+				this.addOperation(Operations.MOVE_SHAPE_LEFT);
+				break;
+			case MOVE_SHAPE_RIGHT:
+				this.activeShape.getPos().setY(this.activeShape.getPos().getY() + 1);
+				this.addOperation(Operations.MOVE_SHAPE_RIGHT);
+				break;
+			case MOVE_SHAPE_DOWN:
+				this.activeShape.getPos().setX(this.activeShape.getPos().getX() + 1);
+				this.addOperation(Operations.MOVE_SHAPE_DOWN);
+				break;
+			case SET_NEW_SHAPE:
+				this.activeShape = (Shape) op.getVal();
 				break;
 		}
 	}
@@ -228,6 +269,7 @@ public class Game {
 
 	public Game() {
 		this.activeShape = Shapes.getRandomShape();
+		this.addOperation(Operations.SET_NEW_SHAPE, this.activeShape);
 		this.activeShape.setPos(new Point(3, 6));
 		this.board = new Board(); 
 		this.score = 0;

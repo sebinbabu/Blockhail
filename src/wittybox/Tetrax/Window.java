@@ -83,6 +83,8 @@ public class Window extends JPanel implements KeyListener {
 			this.game.moveShapeRight();
 		} else if(e.getKeyChar() == 'u') {
 			this.game.undo();
+		} else if(e.getKeyChar() == 'i') {
+			this.game.redo();
 		} else if(e.getKeyChar() == 's') {
 			if(this.game.isPaused()) {
 				this.game.resume();
