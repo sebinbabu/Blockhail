@@ -2,10 +2,12 @@ package wittybox.Tetrax;
 
 import wittybox.Tetrax.*;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.FontMetrics;
 import java.util.Timer;
 import java.util.TimerTask;
 import javax.swing.JFrame;
@@ -14,6 +16,8 @@ import javax.swing.JPanel;
 public class Window extends JPanel implements KeyListener {
 	JFrame window = null;
 	Game game = null;
+
+	private Font bigFont = new Font("Arial",java.awt.Font.BOLD,18);
 
 	public void tick() {
 		if(!this.game.isPaused()) {
@@ -47,21 +51,13 @@ public class Window extends JPanel implements KeyListener {
 		for(i = 0; i < rows; i++) {
 			for(j = 0; j < cols; j++) {
 				color = board.get(i, j);
-				if(color != null) {
+				if(color != null)
 					g.setColor(color);
-        			g.fillRect(j * 20 + 30, i * 20 + 30, 20, 20);
-				} else {
+				else
 					g.setColor(Color.BLACK);
-        			g.fillRect(j * 20 + 30, i * 20 + 30, 20, 20);
-				}
+        		g.fillRect(j * 20 + 30, i * 20 + 30, 20, 20);
 			}
 		}
-
-		String text = "Score: " + this.game.getScore();
-        if(this.game.isPaused())
-        	text = text + " | PAUSED (Press 's' to continue)";
-		g.setColor(Color.WHITE);
-        g.drawString(text, 20, this.game.getBoard().getRows() * 20 + 50);
 
 		Point []points = this.game.getActiveShape().getPoints();
 		int posX = this.game.getActiveShapePos().getX(), posY = this.game.getActiveShapePos().getY(); 
@@ -69,6 +65,32 @@ public class Window extends JPanel implements KeyListener {
 		for(Point p : points) {
 			g.fillRect((posY + p.getY()) * 20 + 30, (posX + p.getX()) * 20 + 30, 20, 20);
 		}
+
+		String text = "Score: " + this.game.getScore();
+		g.setColor(Color.WHITE);
+        g.drawString(text, 20, this.game.getBoard().getRows() * 20 + 50);
+
+		if(this.game.isPaused()) {
+			g.setFont(bigFont);
+			this.drawStringMiddleOfPanel("PAUSED", g);
+		}
+	}
+
+	private void drawStringMiddleOfPanel(String string, Graphics g) {
+        int stringWidth = 0;
+        int stringAccent = 0;
+        int xCoordinate = 0;
+        int yCoordinate = 0;
+
+        FontMetrics fm = g.getFontMetrics();
+      
+        stringWidth = fm.stringWidth(string);
+        stringAccent = fm.getAscent();
+
+        xCoordinate = getWidth() / 2 - stringWidth / 2;
+        yCoordinate = getHeight() / 2 + stringAccent / 2;
+
+        g.drawString(string, xCoordinate, yCoordinate);
 	}
 
 	public void render() {
