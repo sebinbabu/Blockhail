@@ -42,23 +42,23 @@ public class Shapes {
 		}
 	};
 
-	private static Shape []shapes = {
-		new Shape(points[0], Color.blue),
-		new Shape(points[1], Color.green),
-		new Shape(points[2], Color.magenta),
-		new Shape(points[3], Color.orange),
-		new Shape(points[4], Color.red),
-		new Shape(points[5], Color.yellow),
-		new Shape(points[6], Color.pink)
+	private static Color[] shapeColor = {
+		new Color(128, 0, 0),
+		new Color(100, 100, 100),
+		new Color(128, 0, 128),
+		new Color(0, 51, 102),
+		new Color(0, 100, 60),
+		new Color(210, 105, 30),
+		new Color(0, 128, 128)
 	};
 
 	public static Shape getRandomShape() {
 		int shape = rand.nextInt(points.length);
-		return shapes[shape];
+		return new Shape(points[shape], shapeColor[shape]);
 	}
 
 	public static Shape getShape(int shape) {
-		return shapes[shape];
+		return new Shape(points[shape], shapeColor[shape]);
 	}
 
 	public static void main(String args[]) {
