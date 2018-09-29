@@ -1,9 +1,10 @@
 package wittybox.Tetrax;
 
 import wittybox.Tetrax.*;
+import java.awt.Color;
 
 public class Board {
-	private boolean [][]matrix;
+	private Color [][]matrix;
 	private int rows = 20;
 	private int cols = 12;
 
@@ -11,17 +12,14 @@ public class Board {
 		for(int i = row; i > 0; i--) {
 			matrix[i] = matrix[i - 1];
 		}
-		matrix[0] = new boolean[cols];
+		matrix[0] = new Color[cols];
 	}
 
-	public void undeleteRow(int row) {
-		for(int i = 0; i < row; i++) {
+	public void undeleteRow(Color []row, int n) {
+		for(int i = 0; i < n; i++) {
 			matrix[i] = matrix[i + 1];
 		}
-		matrix[row] = new boolean[this.cols];
-		for(int i = 0; i < this.cols; i++) {
-			matrix[row][i] = true;
-		}
+		matrix[n] = row;
 	}
 
 	public int getRows() {
@@ -32,23 +30,23 @@ public class Board {
 		return this.cols;
 	}
 
-	public void set(int x, int y, boolean val) {
-		this.matrix[x][y] = val;
+	public void set(int x, int y, Color color) {
+		this.matrix[x][y] = color;
 	}
 
-	public boolean get(int x, int y) {
+	public Color get(int x, int y) {
 		return this.matrix[x][y];
 	}
 
 	public Board(){
 		this.rows = 20;
 		this.cols = 12;
-		this.matrix = new boolean[20][12];
+		this.matrix = new Color[20][12];
 	}
 
 	public Board(int rows, int cols){
 		this.rows = rows;
 		this.cols = cols;
-		this.matrix = new boolean[rows][cols];
+		this.matrix = new Color[rows][cols];
 	}
  }

@@ -39,14 +39,16 @@ public class Window extends JPanel implements KeyListener {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Board board = this.game.getBoard();
+		Color color;
 		int i, j;
 		if(board == null)
 			return;
 		int cols = board.getCols(), rows = board.getRows();
 		for(i = 0; i < rows; i++) {
 			for(j = 0; j < cols; j++) {
-				if(board.get(i, j)) {
-					g.setColor(Color.GRAY);
+				color = board.get(i, j);
+				if(color != null) {
+					g.setColor(color);
         			g.fillRect(j * 20 + 30, i * 20 + 30, 20, 20);
 				} else {
 					g.setColor(Color.BLACK);
@@ -55,13 +57,16 @@ public class Window extends JPanel implements KeyListener {
 			}
 		}
 
+		String text = "Score: " + this.game.getScore();
+        if(this.game.isPaused())
+        	text = text + " | PAUSED (Press 's' to continue)";
 		g.setColor(Color.WHITE);
-        g.drawString("Score: " + this.game.getScore(), 20, this.game.getBoard().getRows() * 20 + 50);
+        g.drawString(text, 20, this.game.getBoard().getRows() * 20 + 50);
 
 		Point []points = this.game.getActiveShape().getPoints();
 		int posX = this.game.getActiveShapePos().getX(), posY = this.game.getActiveShapePos().getY(); 
+		g.setColor(this.game.getActiveShape().getColor());
 		for(Point p : points) {
-			g.setColor(Color.GRAY);
 			g.fillRect((posY + p.getY()) * 20 + 30, (posX + p.getX()) * 20 + 30, 20, 20);
 		}
 	}
@@ -85,7 +90,9 @@ public class Window extends JPanel implements KeyListener {
 			this.game.undo();
 		} else if(e.getKeyChar() == 'i') {
 			this.game.redo();
-		} else if(e.getKeyChar() == 's') {
+		} else if(e.getKeyChar() == 'q') {
+			System.exit(0);
+		}else if(e.getKeyChar() == 's') {
 			if(this.game.isPaused()) {
 				this.game.resume();
 			} else {

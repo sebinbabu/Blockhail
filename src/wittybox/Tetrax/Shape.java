@@ -1,5 +1,6 @@
 package wittybox.Tetrax;
 
+import java.awt.Color;
 import java.util.Arrays;
 import wittybox.Tetrax.*;
 
@@ -7,11 +8,16 @@ class Shape {
 	private Point [][]points;
 	private int rotation;
 	private Point pos;
+	private Color color;
 
 	public Point[] getPoints() {
 		if(this.points == null)
 			return null;
 		return this.points[rotation];
+	}
+
+	public Color getColor() {
+		return this.color;
 	}
 
 	public void setPos(Point pos) {
@@ -66,17 +72,20 @@ class Shape {
 		this.pos = null;
 		this.points = null;
 		this.rotation = 0;
+		this.color = null;
 	}
 
-	public Shape(Point [][]points) {
+	public Shape(Point [][]points, Color color) {
 		this.pos = null;
 		this.points = points;
 		this.rotation = 0;
+		this.color = color;
 	}
 
-	public Shape(Point pos, Point [][]points) {
+	public Shape(Point pos, Point [][]points, Color color) {
 		this.pos = pos;
 		this.points = points;
 		this.rotation = 0;
+		this.color = color;
 	}
 }
