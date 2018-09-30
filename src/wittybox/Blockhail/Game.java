@@ -9,6 +9,7 @@ public class Game {
 	private Board board;
 	private int score;
 	private boolean paused = true;
+	private boolean stopped = false;
 
 	Stack <Operation> undoStack = new Stack<Operation>();
 	Stack <Operation> redoStack = new Stack<Operation>();
@@ -178,9 +179,26 @@ public class Game {
 		return true;
 	}
 
+	public void stop() {
+		this.stopped = true;
+		this.pause();
+	}
+
+	public boolean isStopped() {
+		return this.stopped;
+	}
+
 	public void setNewShape() {
 		this.activeShape = Shape.getRandomShape();
-		this.activeShape.setPos(new Point(3, 6));
+		this.activeShape.setPos(new Point(2, 6));
+		Point []points = this.activeShape.getPoints();
+		int potentialX = this.activeShape.getPos().getX(), potentialY = this.activeShape.getPos().getY();
+		for(Point pos : points) {
+			if(this.board.get(potentialX + pos.getX(), potentialY + pos.getY()) != 0) {
+				this.stop();
+				return;
+			}
+		}
 		this.addOperation(Operations.SET_NEW_SHAPE, (Object) this.activeShape);
 	}
 
@@ -270,7 +288,7 @@ public class Game {
 	public Game() {
 		this.activeShape = Shape.getRandomShape();
 		this.addOperation(Operations.SET_NEW_SHAPE, this.activeShape);
-		this.activeShape.setPos(new Point(3, 6));
+		this.activeShape.setPos(new Point(2, 6));
 		this.board = new Board(); 
 		this.score = 0;
 	}

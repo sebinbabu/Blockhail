@@ -19,7 +19,7 @@ public class Window extends JPanel implements KeyListener {
 	private Font bigFont = new Font("Arial", java.awt.Font.BOLD, 18);
 
 	public void tick() {
-		if(!this.game.isPaused()) {
+		if(!this.game.isPaused() && !this.game.isStopped()) {
 			this.game.moveShapeDown();
 			this.render();
 		}
@@ -58,18 +58,23 @@ public class Window extends JPanel implements KeyListener {
 			}
 		}
 
-		Point []points = this.game.getActiveShape().getPoints();
-		int posX = this.game.getActiveShapePos().getX(), posY = this.game.getActiveShapePos().getY(); 
-		g.setColor(this.game.getActiveShape().getColor());
-		for(Point p : points) {
-			g.fillRect((posY + p.getY()) * 20 + 30, (posX + p.getX()) * 20 + 30, 20, 20);
+		if(!this.game.isStopped()) {
+			Point []points = this.game.getActiveShape().getPoints();
+			int posX = this.game.getActiveShapePos().getX(), posY = this.game.getActiveShapePos().getY(); 
+			g.setColor(this.game.getActiveShape().getColor());
+			for(Point p : points) {
+				g.fillRect((posY + p.getY()) * 20 + 30, (posX + p.getX()) * 20 + 30, 20, 20);
+			}
 		}
 
 		String text = "Score: " + this.game.getScore();
 		g.setColor(Color.WHITE);
         g.drawString(text, 20, this.game.getBoard().getRows() * 20 + 50);
 
-		if(this.game.isPaused()) {
+		if(this.game.isStopped()) {
+			g.setFont(bigFont);
+			this.drawStringMiddleOfPanel("GAME OVER", g);
+		} else if(this.game.isPaused()) {
 			g.setFont(bigFont);
 			this.drawStringMiddleOfPanel("PAUSED", g);
 		}
@@ -112,13 +117,15 @@ public class Window extends JPanel implements KeyListener {
 			if(!this.game.isPaused())
 				this.game.moveShapeRight();
 		} else if(e.getKeyChar() == 'u') {
-			this.game.undo();
+			if(!this.game.isStopped())
+				this.game.undo();
 		} else if(e.getKeyChar() == 'i') {
-			this.game.redo();
+			if(!this.game.isStopped())
+				this.game.redo();
 		} else if(e.getKeyChar() == 'q') {
 			System.exit(0);
 		} else if(e.getKeyChar() == 's') {
-			if(this.game.isPaused()) {
+			if(this.game.isPaused() && !this.game.isStopped()) {
 				this.game.resume();
 			} else {
 				this.game.pause();
