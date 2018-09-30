@@ -1,13 +1,13 @@
-package wittybox.Tetrax;
+package wittybox.Blockhail;
 
-import wittybox.Tetrax.*;
+import wittybox.Blockhail.*;
 import java.awt.Color;
 import java.util.Stack;
 
 public class Game {
-	private Shape activeShape = null;
-	private Board board = null;
-	private int score = 0;
+	private Shape activeShape;
+	private Board board;
+	private int score;
 	private boolean paused = true;
 
 	Stack <Operation> undoStack = new Stack<Operation>();
@@ -18,6 +18,8 @@ public class Game {
 	}
 
 	public void resume() {
+		if(!redoStack.empty())
+			redoStack = new Stack<Operation>();
 		this.paused = false;
 	}
 
@@ -26,7 +28,7 @@ public class Game {
 	}
 
 	public void undo() {
-		//this.pause();
+		this.pause();
 		if(undoStack.empty())
 			return;
 		Operation op = (Operation) undoStack.pop();
@@ -34,7 +36,7 @@ public class Game {
 
 		switch(op.getOperation()) {
 			case DELETE_ROW:
-			this.undeleteBoardRow((BoardRowWrapper) op.getVal());
+				this.undeleteBoardRow((BoardRowWrapper) op.getVal());
 				score -= 10;
 				break;
 			case ROTATE_SHAPE:
@@ -57,15 +59,14 @@ public class Game {
 	}
 
 	public void redo() {
-		//this.pause();
 		if(redoStack.empty())
 			return;
 		Operation op = (Operation) redoStack.pop();
 
 		switch(op.getOperation()) {
 			case DELETE_ROW:
-				this.board.deleteRow(((Integer) op.getVal()).intValue());
 				this.addOperation(Operations.DELETE_ROW, op.getVal());
+				this.board.deleteRow(((BoardRowWrapper) op.getVal()).getLocation());
 				score += 10;
 				break;
 			case ROTATE_SHAPE:

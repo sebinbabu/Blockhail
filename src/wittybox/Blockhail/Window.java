@@ -1,10 +1,9 @@
-package wittybox.Tetrax;
+package wittybox.Blockhail;
 
-import wittybox.Tetrax.*;
+import wittybox.Blockhail.*;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.FontMetrics;
@@ -28,7 +27,7 @@ public class Window extends JPanel implements KeyListener {
 
 	public Window() {
 		this.game = new Game();
-		this.window = new JFrame("Tetrax");
+		this.window = new JFrame("Blockhail");
 		this.window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.window.setSize(this.game.getBoard().getCols() * 20 + 60, this.game.getBoard().getRows() * 20 + 100);
 		this.window.setResizable(false);
@@ -134,16 +133,15 @@ public class Window extends JPanel implements KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-
     }
 
     public static void main(String args[]) {
-    	Window w = new Window();
+    	Window Blockhail = new Window();
     	Timer t = new Timer();
 		t.schedule(new TimerTask() {
 	    	@Override
 	    	public void run() {
-	       		w.tick();
+	       		Blockhail.tick();
 	    	}
 		}, 0, 500);
     }

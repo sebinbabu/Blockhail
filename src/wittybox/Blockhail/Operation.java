@@ -1,8 +1,8 @@
-package wittybox.Tetrax;
+package wittybox.Blockhail;
 
 import java.util.Stack;
 
-import wittybox.Tetrax.*;
+import wittybox.Blockhail.*;
 
 enum Operations {
 	NONE, DELETE_ROW, ROTATE_SHAPE, SET_NEW_SHAPE,

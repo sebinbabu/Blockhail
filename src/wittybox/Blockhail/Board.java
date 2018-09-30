@@ -1,6 +1,6 @@
-package wittybox.Tetrax;
+package wittybox.Blockhail;
 
-import wittybox.Tetrax.*;
+import wittybox.Blockhail.*;
 
 class BoardRowWrapper {
 	private int location;
@@ -24,8 +24,8 @@ class BoardRowWrapper {
 
 public class Board {
 	private int [][]matrix;
-	private int rows = 20;
-	private int cols = 12;
+	private int rows;
+	private int cols;
 
 
 

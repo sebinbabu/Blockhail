@@ -1,6 +1,6 @@
-package wittybox.Tetrax;
+package wittybox.Blockhail;
 
-import wittybox.Tetrax.*;
+import wittybox.Blockhail.*;
 
 public class Point {
 	private int x;

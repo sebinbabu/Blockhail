@@ -1,8 +1,8 @@
-# Tetrax
+# Blockhail
 
 That classic block game with some added unnecessary features.
 
-![Tetrax](https://github.com/sebinbabu/Tetrax/raw/master/Tetrax.png)
+![Blockhail](https://github.com/sebinbabu/Blockhail/raw/master/Blockhail.png)
 
 
 ### Prerequisites
@@ -16,16 +16,16 @@ You need to install the following two packages:
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. Open up your terminal after installing the prerequisites and put these commands.
 
 ```
-git clone https://github.com/sebinbabu/Tetrax.git
-cd Tetrax
+git clone https://github.com/sebinbabu/Blockhail.git
+cd Blockhail
 mkdir -p bin
-javac -d bin src/wittybox/Tetrax/*.java
+javac -d bin src/wittybox/Blockhail/*.java
 cd bin
-java wittybox.Tetrax.Window
+java wittybox.Blockhail.Window
 ```
 ## Usage
 
-* Use the ```java wittybox.Tetrax.Window``` command to run the application.
+* Use the ```java wittybox.Blockhail.Window``` command to run the application.
 * Press ```s key``` to start / pause.
 * Press ```ARROW_LEFT key``` to move left.
 * Press ```ARROW_RIGHT key``` to move right.

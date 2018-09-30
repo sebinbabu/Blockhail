@@ -1,8 +1,8 @@
-package wittybox.Tetrax;
+package wittybox.Blockhail;
 
 import java.awt.Color;
 import java.util.Random;
-import wittybox.Tetrax.*;
+import wittybox.Blockhail.*;
 
 class Shape {
 	private static Random rand = new Random();
