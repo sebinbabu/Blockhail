@@ -34,7 +34,7 @@ public class Game {
 
 		switch(op.getOperation()) {
 			case DELETE_ROW:
-				//this.undeleteBoardRow((Color[]) op.getVal());
+			this.undeleteBoardRow((BoardRowWrapper) op.getVal());
 				score -= 10;
 				break;
 			case ROTATE_SHAPE:
@@ -122,15 +122,15 @@ public class Game {
 	private void removeFilledRows() {
 		for(int i = 0; i < board.getRows(); i++) {
 			if(isRowFilled(i)) {
+				this.addOperation(Operations.DELETE_ROW, (Object) board.getRow(i));
 				this.board.deleteRow(i);
-				this.addOperation(Operations.DELETE_ROW, new Integer(i));
 				this.score += 10;
 			}
 		}
 	}
 
-	private void undeleteBoardRow(int []row, int n) {
-		this.board.undeleteRow(row, n);
+	private void undeleteBoardRow(BoardRowWrapper row) {
+		this.board.undeleteRow(row);
 	} 
 
 	public boolean reverseRotateShape() {

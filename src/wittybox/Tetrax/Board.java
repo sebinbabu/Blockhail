@@ -2,14 +2,32 @@ package wittybox.Tetrax;
 
 import wittybox.Tetrax.*;
 
-class BoardRow {
-	
+class BoardRowWrapper {
+	private int location;
+	private int []row;
+	public BoardRowWrapper() {
+		this.location = -1;
+		this.row = null;
+	}
+	public BoardRowWrapper(int location, int []row) {
+		this.location = location;
+		this.row = row;
+	}
+	public int[] getRow() {
+		return this.row;
+	}
+
+	public int getLocation() {
+		return this.location;
+	}
 }
 
 public class Board {
 	private int [][]matrix;
 	private int rows = 20;
 	private int cols = 12;
+
+
 
 	public void deleteRow(int row) {
 		for(int i = row; i > 0; i--) {
@@ -18,11 +36,16 @@ public class Board {
 		matrix[0] = new int[cols];
 	}
 
-	public void undeleteRow(int []row, int n) {
+	public void undeleteRow(BoardRowWrapper row) {
+		int n = row.getLocation();
 		for(int i = 0; i < n; i++) {
 			matrix[i] = matrix[i + 1];
 		}
-		matrix[n] = row;
+		matrix[n] = row.getRow();
+	}
+
+	public BoardRowWrapper getRow(int n) {
+		return new BoardRowWrapper(n, this.matrix[n]);
 	}
 
 	public int getRows() {
