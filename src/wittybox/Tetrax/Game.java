@@ -178,7 +178,7 @@ public class Game {
 	}
 
 	public void setNewShape() {
-		this.activeShape = Shapes.getRandomShape();
+		this.activeShape = Shape.getRandomShape();
 		this.activeShape.setPos(new Point(3, 6));
 		this.addOperation(Operations.SET_NEW_SHAPE, (Object) this.activeShape);
 	}
@@ -267,7 +267,7 @@ public class Game {
 	}
 
 	public Game() {
-		this.activeShape = Shapes.getRandomShape();
+		this.activeShape = Shape.getRandomShape();
 		this.addOperation(Operations.SET_NEW_SHAPE, this.activeShape);
 		this.activeShape.setPos(new Point(3, 6));
 		this.board = new Board(); 

@@ -17,7 +17,7 @@ public class Window extends JPanel implements KeyListener {
 	JFrame window = null;
 	Game game = null;
 
-	private Font bigFont = new Font("Arial",java.awt.Font.BOLD,18);
+	private Font bigFont = new Font("Arial", java.awt.Font.BOLD, 18);
 
 	public void tick() {
 		if(!this.game.isPaused()) {

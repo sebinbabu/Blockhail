@@ -1,23 +1,76 @@
 package wittybox.Tetrax;
 
 import java.awt.Color;
-import java.util.Arrays;
+import java.util.Random;
 import wittybox.Tetrax.*;
 
 class Shape {
-	private Point [][]points;
+	private static Random rand = new Random();
+	private static Point [][][]points = {
+		{	//I Shape
+			{new Point(0, -1), new Point(0, 0), new Point(0, 1), new Point(0, 2)},
+			{new Point(-1, 0), new Point(0, 0), new Point(1, 0), new Point(2, 0)}
+		},
+		{	// O Shape
+			{new Point(0, 0), new Point(0, 1), new Point(1, 0), new Point(1, 1)}
+		},
+		{	// L Shape
+			{new Point(0, 0), new Point(0, 1), new Point(0, 2), new Point(1, 0)},
+			{new Point(0, 0), new Point(0, 1), new Point(1, 1), new Point(2, 1)},
+			{new Point(1, 0), new Point(1, 1), new Point(1, 2), new Point(0, 2)},
+			{new Point(0, 0), new Point(1, 0), new Point(2, 0), new Point(2, 1)}
+		},
+		{	// J Shape
+			{new Point(0, 0), new Point(0, 1), new Point(0, 2), new Point(1, 2)},
+			{new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(2, 0)},
+			{new Point(0, 0), new Point(1, 0), new Point(1, 1), new Point(1, 2)},
+			{new Point(0, 0), new Point(0, 1), new Point(1, 0), new Point(2, 0)}
+		},
+		{	// S Shape
+			{new Point(0, 0), new Point(0, 1), new Point(1, 0), new Point(1, -1)},
+			{new Point(-1, 0), new Point(0, 0), new Point(0, 1), new Point(1, 1)},
+		},
+		{	// Z Shape
+			{new Point(0, -1), new Point(0, 0), new Point(1, 0), new Point(1, 1)},
+			{new Point(-1, 1), new Point(0, 0), new Point(0, 1), new Point(1, 0)},
+		},
+		{	// T Shape
+			{new Point(-1, 0), new Point(0, -1), new Point(0, 0), new Point(0, 1)},
+			{new Point(-1, 0), new Point(0, 0), new Point(0, 1), new Point(1, 0)},
+			{new Point(0, -1), new Point(0, 0), new Point(0, 1), new Point(1, 0)},
+			{new Point(-1, 0), new Point(0, -1), new Point(0, 0), new Point(1, 0)}
+		}
+	};
+
+	private static Color[] colors = {
+		new Color(128, 0, 0),
+		new Color(100, 100, 100),
+		new Color(128, 0, 128),
+		new Color(0, 51, 102),
+		new Color(0, 100, 60),
+		new Color(210, 105, 30),
+		new Color(0, 128, 128)
+	};
+
+	public static Shape getRandomShape() {
+		int shape = rand.nextInt(points.length);
+		return Shape.getShape(shape);
+	}
+
+	public static Shape getShape(int shape) {
+		return new Shape(shape);
+	}
+
+	private int shape;
 	private int rotation;
 	private Point pos;
-	private Color color;
 
 	public Point[] getPoints() {
-		if(this.points == null)
-			return null;
-		return this.points[rotation];
+		return Shape.points[shape][rotation];
 	}
 
 	public Color getColor() {
-		return this.color;
+		return Shape.colors[shape];
 	}
 
 	public void setPos(Point pos) {
@@ -44,48 +97,21 @@ class Shape {
 		}
 	}
 
-	@Override
-	public boolean equals(Object s) {
-		return s instanceof Shape &&
-				this.rotation == ((Shape) s).rotation &&
-				Arrays.equals(this.points, ((Shape) s).points);
-	}
-
-	@Override
-	public String toString() {
-		int i, j;
-		StringBuffer sb = new StringBuffer(32);
-		sb.append("{");
-		for(i = 0; i < this.points[this.rotation].length - 1; i++) {
-			sb.append(this.points[this.rotation][i].toString());
-			sb.append(", ");
-		}
-
-		if(i < this.points[this.rotation].length) {
-			sb.append(this.points[this.rotation][i].toString());
-		}
-		sb.append("}");
-		return sb.toString();
-	}
-
 	public Shape() {
 		this.pos = null;
-		this.points = null;
+		this.shape = 0;
 		this.rotation = 0;
-		this.color = null;
 	}
 
-	public Shape(Point [][]points, Color color) {
+	public Shape(int shape) {
 		this.pos = null;
-		this.points = points;
+		this.shape = shape;
 		this.rotation = 0;
-		this.color = color;
 	}
 
-	public Shape(Point pos, Point [][]points, Color color) {
+	public Shape(Point pos, int shape) {
 		this.pos = pos;
-		this.points = points;
+		this.shape = shape;
 		this.rotation = 0;
-		this.color = color;
 	}
 }
