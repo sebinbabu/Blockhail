@@ -7,6 +7,7 @@ import wittybox.Tetrax.*;
 class Shape {
 	private static Random rand = new Random();
 	private static Point [][][]points = {
+		null,
 		{	//I Shape
 			{new Point(0, -1), new Point(0, 0), new Point(0, 1), new Point(0, 2)},
 			{new Point(-1, 0), new Point(0, 0), new Point(1, 0), new Point(2, 0)}
@@ -43,6 +44,7 @@ class Shape {
 	};
 
 	private static Color[] colors = {
+		null,
 		new Color(128, 0, 0),
 		new Color(100, 100, 100),
 		new Color(128, 0, 128),
@@ -52,8 +54,12 @@ class Shape {
 		new Color(0, 128, 128)
 	};
 
+	public static Color getColor(int val) {
+		return Shape.colors[val];
+	}
+
 	public static Shape getRandomShape() {
-		int shape = rand.nextInt(points.length);
+		int shape = rand.nextInt(Shape.points.length - 1) + 1;
 		return Shape.getShape(shape);
 	}
 
@@ -73,6 +79,10 @@ class Shape {
 		return Shape.colors[shape];
 	}
 
+	public int getColorIndex() {
+		return shape;
+	}
+
 	public void setPos(Point pos) {
 		this.pos = pos;
 	}
@@ -84,7 +94,7 @@ class Shape {
 	public void rotateRight() {
 		if(points != null) {
 			rotation++;
-			if(rotation == points.length)
+			if(rotation == Shape.points[shape].length)
 				rotation = 0;
 		}
 	}
@@ -93,7 +103,7 @@ class Shape {
 		if(points != null) {
 			rotation--;
 			if(rotation < 0)
-				rotation = points.length - 1;
+				rotation = Shape.points[shape].length - 1;
 		}
 	}
 

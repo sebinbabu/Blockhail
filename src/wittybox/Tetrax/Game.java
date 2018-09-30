@@ -113,7 +113,7 @@ public class Game {
 	private boolean isRowFilled(int row) {
 		int cols = this.board.getCols();
 		for(int i = 0; i < cols; i++) {
-			if(this.board.get(row, i) == null) 
+			if(this.board.get(row, i) == 0) 
 				return false;
 		}
 		return true;
@@ -129,7 +129,7 @@ public class Game {
 		}
 	}
 
-	private void undeleteBoardRow(Color row[], int n) {
+	private void undeleteBoardRow(int []row, int n) {
 		this.board.undeleteRow(row, n);
 	} 
 
@@ -168,7 +168,7 @@ public class Game {
 				return false;
 			}
 
-			if(this.board.get(x, y) != null) {
+			if(this.board.get(x, y) != 0) {
 				this.activeShape.rotateLeft();
 				return false;
 			}
@@ -186,7 +186,7 @@ public class Game {
 	public void pasteShape() {
 		Point []points = this.activeShape.getPoints();
 		for(Point p : points) {
-			this.board.set(p.getX() + this.activeShape.getPos().getX(), p.getY() + this.activeShape.getPos().getY(), this.activeShape.getColor());
+			this.board.set(p.getX() + this.activeShape.getPos().getX(), p.getY() + this.activeShape.getPos().getY(), this.activeShape.getColorIndex());
 		}
 		this.addOperation(Operations.PASTE_SHAPE, (Object) this.activeShape);
 	}
@@ -201,7 +201,7 @@ public class Game {
 			res = pos.getY() + potentialY;
 			if(res < 0 || res >= this.board.getCols())
 				return false;
-			if(this.board.get(potentialX + pos.getX(), res) != null)
+			if(this.board.get(potentialX + pos.getX(), res) != 0)
 				return false;
 		}
 		this.activeShape.getPos().setY(potentialY);
@@ -226,7 +226,7 @@ public class Game {
 			res = pos.getY() + potentialY;
 			if(res < 0 || res >= this.board.getCols())
 				return false;
-			if(this.board.get(potentialX + pos.getX(), res) != null)
+			if(this.board.get(potentialX + pos.getX(), res) != 0)
 				return false;
 		}
 		this.activeShape.getPos().setY(potentialY);
@@ -247,7 +247,7 @@ public class Game {
 				this.setNewShape();
 				return false;
 			}
-			if(this.board.get(res, potentialY + pos.getY()) != null) {
+			if(this.board.get(res, potentialY + pos.getY()) != 0) {
 				this.pasteShape();
 				this.removeFilledRows();
 				this.setNewShape();
@@ -262,7 +262,7 @@ public class Game {
 	public void clearShape() {
 		Point []points = this.activeShape.getPoints();
 		for(Point p : points) {
-			this.board.set(p.getX() + this.activeShape.getPos().getX(), p.getY() + this.activeShape.getPos().getY(), null);			
+			this.board.set(p.getX() + this.activeShape.getPos().getX(), p.getY() + this.activeShape.getPos().getY(), 0);			
 		}
 	}
 

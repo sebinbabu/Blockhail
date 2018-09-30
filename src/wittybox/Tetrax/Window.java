@@ -43,7 +43,7 @@ public class Window extends JPanel implements KeyListener {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Board board = this.game.getBoard();
-		Color color;
+		int color;
 		int i, j;
 		if(board == null)
 			return;
@@ -51,8 +51,8 @@ public class Window extends JPanel implements KeyListener {
 		for(i = 0; i < rows; i++) {
 			for(j = 0; j < cols; j++) {
 				color = board.get(i, j);
-				if(color != null)
-					g.setColor(color);
+				if(color != 0)
+					g.setColor(Shape.getColor(color));
 				else
 					g.setColor(Color.BLACK);
         		g.fillRect(j * 20 + 30, i * 20 + 30, 20, 20);
