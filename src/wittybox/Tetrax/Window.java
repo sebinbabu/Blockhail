@@ -101,20 +101,24 @@ public class Window extends JPanel implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
 		if (code == KeyEvent.VK_DOWN) {
-			this.game.moveShapeDown();
+			if(!this.game.isPaused())
+				this.game.moveShapeDown();
 		} else if (code == KeyEvent.VK_UP) {
-			this.game.rotateShape();
+			if(!this.game.isPaused())
+				this.game.rotateShape();
 		} else if (code == KeyEvent.VK_LEFT) {
-			this.game.moveShapeLeft();
+			if(!this.game.isPaused())
+				this.game.moveShapeLeft();
 		} else if (code == KeyEvent.VK_RIGHT) {
-			this.game.moveShapeRight();
+			if(!this.game.isPaused())
+				this.game.moveShapeRight();
 		} else if(e.getKeyChar() == 'u') {
 			this.game.undo();
 		} else if(e.getKeyChar() == 'i') {
 			this.game.redo();
 		} else if(e.getKeyChar() == 'q') {
 			System.exit(0);
-		}else if(e.getKeyChar() == 's') {
+		} else if(e.getKeyChar() == 's') {
 			if(this.game.isPaused()) {
 				this.game.resume();
 			} else {
