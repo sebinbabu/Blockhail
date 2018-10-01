@@ -32,6 +32,7 @@ java wittybox.Blockhail.Window
 * Press ```ARROW_DOWN key``` to move down.
 * Press ```ARROW_UP key``` to rotate.
 * Press ```u key``` to undo.
+* Press ```i key``` to undo.
 
 
 ## Authors / Credits
