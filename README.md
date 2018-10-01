@@ -6,8 +6,8 @@ That classic block game with some added unnecessary features.
 
 ## Features
 
-* Load / Save all the moves in the current gameplay
-* Undo / Redo moves
+* Load / save all the moves in the current gameplay
+* Undo / redo moves
 * Savefile player (wittybox.blockhail.Player) to record and play a gameplay
 
 ### Prerequisites
