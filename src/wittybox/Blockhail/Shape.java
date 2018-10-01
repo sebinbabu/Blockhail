@@ -2,9 +2,11 @@ package wittybox.Blockhail;
 
 import java.awt.Color;
 import java.util.Random;
+import java.io.Serializable;
 import wittybox.Blockhail.*;
 
-class Shape {
+class Shape implements Serializable {
+	private static final long serialVersionUID = 5462223600l;
 	private static Random rand = new Random();
 	private static Point [][][]points = {
 		null,

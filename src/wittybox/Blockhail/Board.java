@@ -1,8 +1,9 @@
 package wittybox.Blockhail;
 
+import java.io.Serializable;
 import wittybox.Blockhail.*;
 
-class BoardRowWrapper {
+class BoardRowWrapper implements Serializable {
 	private int location;
 	private int []row;
 	public BoardRowWrapper() {
@@ -62,6 +63,10 @@ public class Board {
 
 	public int get(int x, int y) {
 		return this.matrix[x][y];
+	}
+
+	public void reset() {
+		this.matrix = new int[this.rows][this.cols];
 	}
 
 	public Board(){

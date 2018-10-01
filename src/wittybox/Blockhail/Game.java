@@ -2,7 +2,13 @@ package wittybox.Blockhail;
 
 import wittybox.Blockhail.*;
 import java.awt.Color;
-import java.util.Stack;
+import java.io.FileOutputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
+import java.util.Deque;
+import java.util.LinkedList;
 
 public class Game {
 	private Shape activeShape;
@@ -11,16 +17,23 @@ public class Game {
 	private boolean paused = true;
 	private boolean stopped = false;
 
-	Stack <Operation> undoStack = new Stack<Operation>();
-	Stack <Operation> redoStack = new Stack<Operation>();
+	Deque <Operation> undoQueue = new LinkedList<Operation>();
+	Deque <Operation> redoQueue = new LinkedList<Operation>();
+
+	public void reset() {
+		undoQueue = new LinkedList<Operation>();
+		redoQueue = new LinkedList<Operation>();
+		this.score = 0;
+		this.board.reset();
+	}
 
 	public boolean isPaused() {
 		return paused;
 	}
 
 	public void resume() {
-		if(!redoStack.empty())
-			redoStack = new Stack<Operation>();
+		if(!redoQueue.isEmpty())
+			redoQueue = new LinkedList<Operation>();
 		this.paused = false;
 	}
 
@@ -28,12 +41,57 @@ public class Game {
 		this.paused = true;
 	}
 
-	public void undo() {
+	public void save() {
 		this.pause();
-		if(undoStack.empty())
+		Operation op;
+		int state = 0;
+		while(!this.undoQueue.isEmpty()) {
+			this.undo();
+			state++;
+		}
+		try {
+			FileOutputStream fileOut = new FileOutputStream("./state.play");
+			ObjectOutputStream out = new ObjectOutputStream(fileOut);
+			while(state-- > 0) {
+				op = this.redoQueue.peekFirst();
+				out.writeObject(op);
+				this.redo();
+			}
+			out.writeObject(null);
+			out.close();
+			fileOut.close();
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void load() {
+		this.pause();
+		this.reset();
+
+		Operation op;
+		int state = 0;
+		try {
+			FileInputStream fileIn = new FileInputStream("./state.play");
+			ObjectInputStream in = new ObjectInputStream(fileIn);
+			while((op = (Operation) in.readObject()) != null) {
+				this.redoQueue.addLast(op);
+			}
+			in.close();
+			fileIn.close();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		while(!redoQueue.isEmpty()) {
+			this.redo();
+		}
+	}
+
+	public void undo() {
+		if(undoQueue.isEmpty())
 			return;
-		Operation op = (Operation) undoStack.pop();
-		redoStack.push(op);
+		Operation op = (Operation) undoQueue.removeFirst();
+		redoQueue.addFirst(op);
 
 		switch(op.getOperation()) {
 			case DELETE_ROW:
@@ -61,10 +119,11 @@ public class Game {
 
 	public void redo() {
 		Point []points;
-		if(redoStack.empty())
+		if(redoQueue.isEmpty())
 			return;
-		Operation op = (Operation) redoStack.pop();
-		undoStack.push(op);
+		Operation op = (Operation) redoQueue.removeFirst();
+		undoQueue.addFirst(op);
+
 		switch(op.getOperation()) {
 			case DELETE_ROW:
 				this.board.deleteRow(((BoardRowWrapper) op.getVal()).getLocation());
@@ -293,11 +352,11 @@ public class Game {
 	}
 	private int i = 0;
 	private void addOperation(Operations op, Object val) {
-		undoStack.push(new Operation(op, val));
+		undoQueue.addFirst(new Operation(op, val));
 	}
 
 	private void addOperation(Operations op) {
-		undoStack.push(new Operation(op));
+		undoQueue.addFirst(new Operation(op));
 	}
 
 	public static void main(String args[]) {

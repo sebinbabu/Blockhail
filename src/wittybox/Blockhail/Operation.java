@@ -1,6 +1,7 @@
 package wittybox.Blockhail;
 
 import java.util.Stack;
+import java.io.Serializable;
 
 import wittybox.Blockhail.*;
 
@@ -10,7 +11,7 @@ enum Operations {
 	MOVE_SHAPE_DOWN, CLEAR_SHAPE;
 }
 
-class Operation {
+class Operation implements Serializable{
 	private Operations op;
 	private Object val;
 
