@@ -14,7 +14,7 @@ You need to install the following two packages:
 
 * Load / save all the moves in the current gameplay
 * Undo / redo moves
-* Savefile player (wittybox.blockhail.Player) to record and play a gameplay
+* Replay : (wittybox.blockhail.Player) to record and replay a gameplay
 
 ## Getting Started
 
@@ -31,7 +31,7 @@ java wittybox.blockhail.Main
 ## Usage
 
 * Use the ```java wittybox.blockhail.Main``` command to run the application.
-* Use the ```java wittybox.blockhail.Player``` command to run the player.
+* Use the ```java wittybox.blockhail.Player``` command to run the replayer.
 * Press ```s key``` to start / pause.
 * Press ```z key``` to save state.
 * Press ```x key``` to load state.
