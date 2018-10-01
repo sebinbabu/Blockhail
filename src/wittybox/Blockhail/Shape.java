@@ -91,6 +91,14 @@ class Shape {
 		return this.pos;
 	}
 
+	public int getShapeIndex() {
+		return this.shape;
+	}
+
+	public int getRotation() {
+		return this.rotation;
+	}
+
 	public void rotateRight() {
 		if(points != null) {
 			rotation++;
@@ -123,5 +131,17 @@ class Shape {
 		this.pos = pos;
 		this.shape = shape;
 		this.rotation = 0;
+	}
+
+	public Shape(Shape shape) {
+		this.pos = new Point(shape.pos);
+		this.shape = shape.shape;
+		this.rotation = shape.rotation;
+	}
+
+	public Shape(Point pos, int shape, int rotation) {
+		this.pos = pos;
+		this.shape = shape;
+		this.rotation = rotation;
 	}
 }

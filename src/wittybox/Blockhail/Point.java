@@ -27,6 +27,11 @@ public class Point {
 		this.y = y;
 	}
 
+	Point(Point point) {
+		this.x = point.x;
+		this.y = point.y;
+	}
+
 	Point() {
 		this.x = 0;
 		this.y = 0;
