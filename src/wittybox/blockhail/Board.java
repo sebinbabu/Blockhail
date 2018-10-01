@@ -1,7 +1,7 @@
-package wittybox.Blockhail;
+package wittybox.blockhail;
 
 import java.io.Serializable;
-import wittybox.Blockhail.*;
+import wittybox.blockhail.*;
 
 class BoardRowWrapper implements Serializable {
 	private int location;

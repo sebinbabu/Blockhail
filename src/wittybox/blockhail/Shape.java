@@ -1,9 +1,9 @@
-package wittybox.Blockhail;
+package wittybox.blockhail;
 
 import java.awt.Color;
 import java.util.Random;
 import java.io.Serializable;
-import wittybox.Blockhail.*;
+import wittybox.blockhail.*;
 
 class Shape implements Serializable {
 	private static final long serialVersionUID = 5462223600l;

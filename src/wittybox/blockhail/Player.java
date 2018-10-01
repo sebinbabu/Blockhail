@@ -1,4 +1,4 @@
-package wittybox.Blockhail;
+package wittybox.blockhail;
 
 import wittybox.Blockhail.*;
 import java.awt.Color;
@@ -12,7 +12,7 @@ import java.util.TimerTask;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class Window extends JPanel implements KeyListener {
+public class Player extends JPanel implements KeyListener {
 	JFrame window = null;
 	Game game = null;
 
@@ -20,14 +20,15 @@ public class Window extends JPanel implements KeyListener {
 
 	public void tick() {
 		if(!this.game.isPaused() && !this.game.isStopped()) {
-			this.game.moveShapeDown();
+			this.game.redo();
 			this.render();
 		}
 	}
 
-	public Window() {
+	public Player() {
 		this.game = new Game();
-		this.window = new JFrame("Blockhail");
+		this.game.loadOperations();
+		this.window = new JFrame("Blockhail Player");
 		this.window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.window.setSize(this.game.getBoard().getCols() * 20 + 60, this.game.getBoard().getRows() * 20 + 100);
 		this.window.setResizable(false);
@@ -36,7 +37,6 @@ public class Window extends JPanel implements KeyListener {
 		this.setOpaque(true);
 		this.window.setVisible(true);
 		this.window.addKeyListener(this);
-		this.render();
 	}
 
 	public void paintComponent(Graphics g) {
@@ -103,35 +103,12 @@ public class Window extends JPanel implements KeyListener {
 
 	@Override
     public void keyPressed(KeyEvent e) {
-        int code = e.getKeyCode();
-		if (code == KeyEvent.VK_DOWN) {
-			if(!this.game.isPaused())
-				this.game.moveShapeDown();
-		} else if (code == KeyEvent.VK_UP) {
-			if(!this.game.isPaused())
-				this.game.rotateShape();
-		} else if (code == KeyEvent.VK_LEFT) {
-			if(!this.game.isPaused())
-				this.game.moveShapeLeft();
-		} else if (code == KeyEvent.VK_RIGHT) {
-			if(!this.game.isPaused())
-				this.game.moveShapeRight();
-		} else if(e.getKeyChar() == 'u') {
-			if(!this.game.isStopped())
-				this.game.pause();
-				this.game.undo();
-		} else if(e.getKeyChar() == 'i') {
-			if(!this.game.isStopped())
-				this.game.redo();
-		} else if(e.getKeyChar() == 'q') {
+        char code = e.getKeyChar();
+        if(code == 'q') {
 			System.exit(0);
-		} else if(e.getKeyChar() == 'z') {
-			this.game.save();
-		} else if(e.getKeyChar() == 'x') {
-			this.game.load();
-		} else if(e.getKeyChar() == 's') {
+		} else if(code == 's') {
 			if(this.game.isPaused() && !this.game.isStopped()) {
-				this.game.resume();
+				this.game.nonDestructiveResume();
 			} else {
 				this.game.pause();
 			}
@@ -148,14 +125,14 @@ public class Window extends JPanel implements KeyListener {
     }
 
     public static void main(String args[]) {
-    	Window Blockhail = new Window();
+    	Player blockhailPlayer = new Player();
     	Timer t = new Timer();
 		t.schedule(new TimerTask() {
 	    	@Override
 	    	public void run() {
-	       		Blockhail.tick();
+	       		blockhailPlayer.tick();
 	    	}
-		}, 0, 500);
+		}, 0, 300);
     }
 
 }

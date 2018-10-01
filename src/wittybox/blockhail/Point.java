@@ -1,7 +1,7 @@
-package wittybox.Blockhail;
+package wittybox.blockhail;
 
 import java.io.Serializable;
-import wittybox.Blockhail.*;
+import wittybox.blockhail.*;
 
 public class Point implements Serializable {
 	private int x;

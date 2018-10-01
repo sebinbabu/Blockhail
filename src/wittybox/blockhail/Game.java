@@ -1,6 +1,6 @@
-package wittybox.Blockhail;
+package wittybox.blockhail;
 
-import wittybox.Blockhail.*;
+import wittybox.blockhail.*;
 import java.awt.Color;
 import java.io.FileOutputStream;
 import java.io.FileInputStream;
@@ -37,6 +37,10 @@ public class Game {
 		this.paused = false;
 	}
 
+	public void nonDestructiveResume() {
+		this.paused = false;
+	}
+
 	public void pause() {
 		this.paused = true;
 	}
@@ -65,13 +69,9 @@ public class Game {
 		}
 	}
 
-	public void load() {
-		this.pause();
-		this.reset();
-
-		Operation op;
-		int state = 0;
+	public void loadOperations() {
 		try {
+			Operation op;
 			FileInputStream fileIn = new FileInputStream("./state.play");
 			ObjectInputStream in = new ObjectInputStream(fileIn);
 			while((op = (Operation) in.readObject()) != null) {
@@ -82,16 +82,22 @@ public class Game {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void load() {
+		this.pause();
+		this.reset();
+		this.loadOperations();
 		while(!redoQueue.isEmpty()) {
 			this.redo();
 		}
 	}
 
 	public void undo() {
-		if(undoQueue.isEmpty())
+		if(this.undoQueue.isEmpty())
 			return;
 		Operation op = (Operation) undoQueue.removeFirst();
-		redoQueue.addFirst(op);
+		this.redoQueue.addFirst(op);
 
 		switch(op.getOperation()) {
 			case DELETE_ROW:
@@ -119,11 +125,10 @@ public class Game {
 
 	public void redo() {
 		Point []points;
-		if(redoQueue.isEmpty())
+		if(this.redoQueue.isEmpty()) 
 			return;
 		Operation op = (Operation) redoQueue.removeFirst();
-		undoQueue.addFirst(op);
-
+		this.undoQueue.addFirst(op);
 		switch(op.getOperation()) {
 			case DELETE_ROW:
 				this.board.deleteRow(((BoardRowWrapper) op.getVal()).getLocation());

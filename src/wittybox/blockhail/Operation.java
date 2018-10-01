@@ -1,9 +1,9 @@
-package wittybox.Blockhail;
+package wittybox.blockhail;
 
 import java.util.Stack;
 import java.io.Serializable;
 
-import wittybox.Blockhail.*;
+import wittybox.blockhail.*;
 
 enum Operations {
 	NONE, DELETE_ROW, ROTATE_SHAPE, SET_NEW_SHAPE,

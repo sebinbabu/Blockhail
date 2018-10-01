@@ -4,6 +4,11 @@ That classic block game with some added unnecessary features.
 
 ![Blockhail](https://github.com/sebinbabu/Blockhail/raw/master/Blockhail.png)
 
+## Features
+
+* Load / Save all the moves in the current gameplay
+* Undo / Redo moves
+* Savefile player (wittybox.blockhail.Player) to record and play a gameplay
 
 ### Prerequisites
 
@@ -19,13 +24,14 @@ These instructions will get you a copy of the project up and running on your loc
 git clone https://github.com/sebinbabu/Blockhail.git
 cd Blockhail
 mkdir -p bin
-javac -d bin src/wittybox/Blockhail/*.java
+javac -d bin src/wittybox/blockhail/*.java
 cd bin
-java wittybox.Blockhail.Window
+java wittybox.blockhail.Main
 ```
 ## Usage
 
-* Use the ```java wittybox.Blockhail.Window``` command to run the application.
+* Use the ```java wittybox.blockhail.Main``` command to run the application.
+* Use the ```java wittybox.blockhail.Player``` command to run the player.
 * Press ```s key``` to start / pause.
 * Press ```z key``` to save state.
 * Press ```x key``` to load state.
