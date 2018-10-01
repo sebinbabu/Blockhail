@@ -4,17 +4,17 @@ That classic block game with some added unnecessary features.
 
 ![Blockhail](https://github.com/sebinbabu/Blockhail/raw/master/Blockhail.png)
 
-## Features
-
-* Load / save all the moves in the current gameplay
-* Undo / redo moves
-* Savefile player (wittybox.blockhail.Player) to record and play a gameplay
-
 ### Prerequisites
 
 You need to install the following two packages: 
 * gradle (to build the source)
 * JDK 1.8 or higher
+
+## Features
+
+* Load / save all the moves in the current gameplay
+* Undo / redo moves
+* Savefile player (wittybox.blockhail.Player) to record and play a gameplay
 
 ## Getting Started
 

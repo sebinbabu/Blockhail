@@ -1,6 +1,6 @@
 package wittybox.blockhail;
 
-import wittybox.Blockhail.*;
+import wittybox.blockhail.*;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
