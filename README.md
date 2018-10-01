@@ -27,12 +27,14 @@ java wittybox.Blockhail.Window
 
 * Use the ```java wittybox.Blockhail.Window``` command to run the application.
 * Press ```s key``` to start / pause.
+* Press ```z key``` to save state.
+* Press ```x key``` to load state.
 * Press ```ARROW_LEFT key``` to move left.
 * Press ```ARROW_RIGHT key``` to move right.
 * Press ```ARROW_DOWN key``` to move down.
 * Press ```ARROW_UP key``` to rotate.
 * Press ```u key``` to undo.
-* Press ```i key``` to undo.
+* Press ```i key``` to redo.
 
 
 ## Authors / Credits
