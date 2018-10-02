@@ -23,11 +23,17 @@ These instructions will get you a copy of the project up and running on your loc
 ```
 git clone https://github.com/sebinbabu/Blockhail.git
 cd Blockhail
-mkdir -p bin
-javac -d bin src/wittybox/blockhail/*.java
-cd bin
-java wittybox.blockhail.Main
+gradle build
 ```
+To invoke the game:
+```
+java -jar build/libs/Blockhail.jar
+```
+To invoke the replayer:
+```
+java -cp build/libs/Blockhail.jar wittybox.blockhail.Player
+```
+
 ## Usage
 
 * Use the ```java wittybox.blockhail.Main``` command to run the application.
