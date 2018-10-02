@@ -20,6 +20,8 @@ You need to install the following two packages:
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. Open up your terminal after installing the prerequisites and put these commands.
 
+Install gradle from [here](https://gradle.org/install/)
+
 ```
 git clone https://github.com/sebinbabu/Blockhail.git
 cd Blockhail
